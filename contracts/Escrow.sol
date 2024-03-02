@@ -15,6 +15,8 @@ address public inspector;
 address payable public seller;
 address public nftAddress;
 
+mapping (uint256 => bool) public isListed;
+
 constructor(address _nftAddress, address payable _seller, address _inspector, address _lender){
   nftAddress = _nftAddress;
   seller = _seller;
@@ -22,6 +24,9 @@ constructor(address _nftAddress, address payable _seller, address _inspector, ad
   inspector = _inspector;
 }
 function list(uint256 _nftID) public{
-   
+  //Transfer NFT from the seller to the contract
+   IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
+
 }
 }
+ 
