@@ -33,6 +33,7 @@ mapping (uint256 => uint256)public purchasePrice;
 mapping (uint256 => uint256) public escrowAmount;
 mapping(uint256 => address) public buyer;
 mapping(uint256 => bool) public inspectionPassed;
+mapping(uint256 => mapping(address => bool)) public approval;
 
 constructor(address _nftAddress, address payable _seller, address _inspector, address _lender){
   nftAddress = _nftAddress;
@@ -62,10 +63,15 @@ function depositEarnest(uint _nftID) public payable onlyBuyer(_nftID){
 function updateInspectionStatus(uint256 _nftID, bool _passed) public onlyInspector{
   inspectionPassed[_nftID] =_passed;
 }
-receive() external payable {}
+//Approval
+function approveSale(uint256 _nftID)public {
+  approval[_nftID][msg.sender]=true;
+}
 
+receive() external payable {}
 function getBalance() public view returns(uint256){
   return address(this).balance;
 }
+
 
 }
