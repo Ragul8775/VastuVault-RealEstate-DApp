@@ -87,6 +87,10 @@ function finalizeSale(uint256 _nftID) public{
 
  (bool success,)=payable(seller).call{value:address(this).balance}("");
  require(success);
+
+ //Transfer NFT from seller to this contract
+  IERC721(nftAddress).transferFrom( address(this), buyer[_nftID],_nftID);
+
 }
 }
 

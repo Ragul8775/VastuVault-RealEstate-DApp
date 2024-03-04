@@ -138,6 +138,9 @@ describe("Escrow", () => {
       transaction = await escrow.connect(seller).finalizeSale(1);
       await transaction.wait();
     });
+    it("Update ownership", async () => {
+      expect(await realEstate.ownerOf(1)).to.be.equal(buyer.address);
+    });
     it("Update balance", async () => {
       expect(await escrow.getBalance()).to.be.equal(0);
     });
