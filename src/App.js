@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-// Components
-import Navigation from "./components/Navigation";
+// Compone
 import Search from "./components/Search";
 import Home from "./components/Home";
-
+import Navigation from "./components/Navigation";
 // ABIs
 import RealEstate from "./abis/RealEstate.json";
 import Escrow from "./abis/Escrow.json";
@@ -14,9 +13,23 @@ import Escrow from "./abis/Escrow.json";
 import config from "./config.json";
 
 function App() {
+  const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
   const loadBlockChainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(provider);
+    const network = await provider.getNetwork();
+
+    const realEstate = new ethers.Contract(
+      config[network.chainId].realEstate.address,
+      RealEstate,
+      provider
+    );
+    const totalSuppy = await realEstate.totalSuppy();
+    console.log(totalSuppy.toString());
+    /* config[network.chainId].realEstate.address;
+    config[network.chainId].escrow.address; */
+
     window.ethereum.on("accountsChanged", async () => {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
