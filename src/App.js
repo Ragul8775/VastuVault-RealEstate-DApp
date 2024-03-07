@@ -15,29 +15,37 @@ import config from "./config.json";
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
+  const [escrow, setEscrow] = useState(null);
+
   const loadBlockChainData = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    setProvider(provider);
-    const network = await provider.getNetwork();
+    const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(web3Provider);
+
+    const network = await web3Provider.getNetwork();
 
     const realEstate = new ethers.Contract(
       config[network.chainId].realEstate.address,
       RealEstate,
       provider
     );
-    const totalSuppy = await realEstate.totalSuppy();
-    console.log(totalSuppy.toString());
-    /* config[network.chainId].realEstate.address;
-    config[network.chainId].escrow.address; */
+    const totalSupply = await realEstate.totalSupply();
+
+    const escrow = new ethers.Contract(
+      config[network.chainId].escrow.address,
+      Escrow,
+      provider
+    );
+    setEscrow(escrow);
 
     window.ethereum.on("accountsChanged", async () => {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const account = ethers.utils.getAddress(account[0]);
+      const account = ethers.utils.getAddress(accounts[0]); // Corrected variable name here
       setAccount(account);
     });
   };
+
   useEffect(() => {
     loadBlockChainData();
   }, []);
