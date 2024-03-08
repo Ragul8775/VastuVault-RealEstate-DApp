@@ -16,6 +16,7 @@ function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
   const [escrow, setEscrow] = useState(null);
+  const [homes, setHomes] = useState([]);
 
   const loadBlockChainData = async () => {
     const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -28,7 +29,17 @@ function App() {
       RealEstate,
       provider
     );
+
     const totalSupply = await realEstate.totalSupply();
+
+    const homes = [];
+    for (var i = 1; i <= totalSupply; i++) {
+      const uri = await realEstate.tokenURI(i);
+      const response = await fetch(uri);
+      const metadata = await response.json();
+      homes.push(metadata);
+    }
+    setHomes(homes);
 
     const escrow = new ethers.Contract(
       config[network.chainId].escrow.address,
@@ -61,19 +72,22 @@ function App() {
           <div className="line"></div>
         </div>
         <div className="cards">
-          <div className="card">
-            <div className="card__image">
-              <img alt="Home" src="" />
+          {homes.map((home, index) => (
+            <div className="card" key={index}>
+              <div className="card__image">
+                <img src={home.image} alt="Home" />
+              </div>
+              <div className="card__info">
+                <h4>{home.attributes[0].value} ETH</h4>
+                <p>
+                  <strong>{home.attributes[2].value}</strong> beds|
+                  <strong>{home.attributes[3].value}</strong> bath|
+                  <strong>{home.attributes[4].value}</strong> sqft
+                </p>
+                <p>{home.address}</p>
+              </div>
             </div>
-            <div className="card__info">
-              <h4>1 ETH</h4>
-              <p>
-                <strong>1</strong>bds 1<strong>2</strong>ba 1<strong>3</strong>
-                sqft
-              </p>
-              <p>1234 Elmes St</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
