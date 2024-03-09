@@ -36,7 +36,7 @@ Vastu Vault is a decentralized application (dApp) built on the Ethereum blockcha
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/<your-github-username>/vastu-vault.git
+git clone https://github.com/Ragul8775/VastuVault-RealEstate-DApp.git
 cd vastu-vault
 ```
 
