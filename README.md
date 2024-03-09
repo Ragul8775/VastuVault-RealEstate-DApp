@@ -1,7 +1,3 @@
-Creating a README for your project "Vastu Vault" involves outlining key information that potential users and contributors would find helpful. Below is a template you can customize based on your project's specifics. This README assumes a basic structure and may need adjustments based on your project's unique features and setup requirements.
-
----
-
 # Vastu Vault
 
 Vastu Vault is a decentralized application (dApp) built on the Ethereum blockchain, leveraging smart contracts to facilitate secure and transparent real estate transactions. This project aims to simplify the buying, selling, and verification process of properties by integrating blockchain technology, ensuring trust, immutability, and efficiency.
@@ -88,5 +84,3 @@ Encourage contributions and outline the process for submitting pull requests to 
 Vastu Vault is MIT licensed.
 
 ---
-
-Remember to replace placeholders (like `<network-name>`, `<your-github-username>`) with actual values from your project setup. Additionally, provide more detailed instructions and explanations for sections like "Smart Contract Usage" and "Frontend Application" based on your application's functionality and user interface.
