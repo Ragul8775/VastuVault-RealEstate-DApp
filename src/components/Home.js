@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import close from "../assets/close.svg";
 
-const Home = ({ home, provider, escrow, toggleProp }) => {
+const Home = ({ home, provider, escrow, account, toggleProp }) => {
   const [buyer, setBuyer] = useState(null);
   const [lender, setLender] = useState(null);
   const [inspector, setInspector] = useState(null);
@@ -39,6 +39,52 @@ const Home = ({ home, provider, escrow, toggleProp }) => {
     const owner = await escrow.buyer(home.id);
     setOwner(owner);
   };
+  const buyHandler = async () => {
+    const escrowAmount = await escrow.escrowAmount(home.id);
+    const signer = await provider.getSigner();
+
+    let transaction = await escrow
+      .connect(signer)
+      .depositEarnest(home.id, { value: escrowAmount });
+    await transaction.wait();
+
+    transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+    setBought(true);
+  };
+  const inspectHandler = async () => {
+    const signer = await provider.getSigner();
+    const transaction = await escrow
+      .connect(signer)
+      .updateInspectionStatus(home.id, true);
+    await transaction.wait();
+    setHasInspected(true);
+  };
+  const lendHandler = async () => {
+    const signer = await provider.getSigner();
+    const transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    const lenderAmount =
+      (await escrow.purchasePrice(home.id)) -
+      (await escrow.escrowAmount(home.id));
+    await signer.sendTransaction({
+      to: escrow.address,
+      value: lenderAmount.toString(),
+      gasLimit: 60000,
+    });
+    setHasLended(true);
+  };
+  const sellHandler = async () => {
+    const signer = await provider.getSigner();
+
+    let transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+    transaction = await escrow.connect(signer).finalizeSale(home.id);
+    await transaction.wait();
+
+    setHasSold(true);
+  };
   useEffect(() => {
     fetchDetails();
     fetchOwner();
@@ -57,23 +103,54 @@ const Home = ({ home, provider, escrow, toggleProp }) => {
             <strong>{home.attributes[4].value}</strong> sqft
           </p>
           <p>{home.address}</p>
-          <h2>{home.attributes[0].value}</h2>
+          <h2>{home.attributes[0].value} ETH</h2>
           {owner ? (
-            <div className="home__owned"> 
-                Owned by {owner.slice(0,6)+'...'+owner.slice(-4)}
+            <div className="home__owned">
+              Owned by {owner.slice(0, 6) + "..." + owner.slice(-4)}
             </div>
-          ):()}
+          ) : (
+            <div>
+              {account === inspector ? (
+                <button
+                  className="home__buy"
+                  onClick={inspectHandler}
+                  disabled={hasInspected}
+                >
+                  Approve & Inspection
+                </button>
+              ) : account === lender ? (
+                <button
+                  className="home__buy"
+                  onClick={lendHandler}
+                  disabled={haslended}
+                >
+                  Approve & Lend
+                </button>
+              ) : account === seller ? (
+                <button
+                  className="home__buy"
+                  onClick={sellHandler}
+                  disabled={hasSold}
+                >
+                  Approve & Sell
+                </button>
+              ) : (
+                <button
+                  className="home__buy"
+                  onClick={buyHandler}
+                  disabled={bought}
+                >
+                  Buy
+                </button>
+              )}
+              <button
+                className="home__contact" /* onClick={buyHandler} disabled={hasBought} */
+              >
+                Contact Agent
+              </button>
+            </div>
+          )}
           <div>
-            <button
-              className="home__buy" /* onClick={buyHandler} disabled={hasBought} */
-            >
-              Buy
-            </button>
-            <button
-              className="home__contact" /* onClick={buyHandler} disabled={hasBought} */
-            >
-              Contact Agent
-            </button>
             <hr />
             <h2>Overview</h2>
             <p>{home.description}</p>

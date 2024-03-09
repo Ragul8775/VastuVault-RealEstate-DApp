@@ -1,41 +1,92 @@
-# Real Estate NFT DApp
+Creating a README for your project "Vastu Vault" involves outlining key information that potential users and contributors would find helpful. Below is a template you can customize based on your project's specifics. This README assumes a basic structure and may need adjustments based on your project's unique features and setup requirements.
 
-## Technology Stack & Tools
+---
 
-- Solidity (Writing Smart Contracts & Tests)
-- Javascript (React & Testing)
-- [Hardhat](https://hardhat.org/) (Development Framework)
-- [Ethers.js](https://docs.ethers.io/v5/) (Blockchain Interaction)
-- [React.js](https://reactjs.org/) (Frontend Framework)
+# Vastu Vault
 
-## Requirements For Initial Setup
+Vastu Vault is a decentralized application (dApp) built on the Ethereum blockchain, leveraging smart contracts to facilitate secure and transparent real estate transactions. This project aims to simplify the buying, selling, and verification process of properties by integrating blockchain technology, ensuring trust, immutability, and efficiency.
 
-- Install [NodeJS](https://nodejs.org/en/)
+## Features
 
-## Setting Up
+- **Property Listing**: Users can list real estate properties as NFTs, providing detailed information and digital proof of ownership.
+- **Escrow Service**: Implements an escrow mechanism to securely hold funds until all conditions of the property transaction are met.
+- **Roles Management**: Different roles (buyer, seller, lender, inspector) with specific permissions and actions to streamline the real estate transaction process.
+- **Verification & Approval**: Facilities for lenders and inspectors to approve transactions, ensuring properties meet agreed standards and financial agreements are satisfied.
 
-### 1. Clone/Download the Repository
+## Technology Stack
 
-### 2. Install Dependencies:
+- **Smart Contracts**: Solidity
+- **Blockchain**: Ethereum
+- **Frontend**: React.js
+- **Ethereum Web Client Library**: Ethers.js
+- **Development Environment**: Hardhat
 
-`$ npm install`
+## Project Structure
 
-### 3. Run tests
+- `contracts/`: Solidity smart contracts.
+- `scripts/`: Deployment and interaction scripts for Hardhat.
+- `test/`: Smart contract test files.
+- `frontend/`: React frontend application.
+- `abis/`: ABIs of the deployed smart contracts.
+- `config.json`: Network configuration and deployed contract addresses.
 
-`$ npx hardhat test`
+## Setup and Installation
 
-### 4. Start Hardhat node
+### Prerequisites
 
-`$ npx hardhat node`
+- Node.js and npm installed.
+- MetaMask or any Ethereum wallet setup in your browser.
 
-### 5. Run deployment script
+### Clone the Repository
 
-In a separate terminal execute:
-`$ npx hardhat run ./scripts/deploy.js --network localhost`
+```bash
+git clone https://github.com/<your-github-username>/vastu-vault.git
+cd vastu-vault
+```
 
-### 7. Start frontend
+### Install Dependencies
 
-`$ npm run start`
+```bash
+# Install Hardhat and smart contract dependencies
+npm install
 
-<!-- npx hardhat node
->npx hardhat run scripts/deploy.js --network localhost -->
+# Install frontend dependencies
+cd frontend
+npm install
+```
+
+### Compile and Deploy Contracts
+
+```bash
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network <network-name>
+```
+
+Update `frontend/src/config.json` with the deployed contract addresses.
+
+### Start the Frontend Application
+
+```bash
+cd frontend
+npm start
+```
+
+## Smart Contract Usage
+
+Describe how to interact with your smart contracts, including minting NFTs, listing properties, and finalizing transactions.
+
+## Frontend Application
+
+Guide on how to use the dApp, including connecting a wallet, browsing listed properties, and participating in transactions.
+
+## Contributing
+
+Encourage contributions and outline the process for submitting pull requests to your project.
+
+## License
+
+Vastu Vault is MIT licensed.
+
+---
+
+Remember to replace placeholders (like `<network-name>`, `<your-github-username>`) with actual values from your project setup. Additionally, provide more detailed instructions and explanations for sections like "Smart Contract Usage" and "Frontend Application" based on your application's functionality and user interface.
